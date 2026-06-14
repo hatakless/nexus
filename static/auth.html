@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus — Войти</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:        #0e1117;
+  --bg2:       #141922;
+  --glass:     rgba(255,255,255,0.04);
+  --glass-b:   rgba(255,255,255,0.08);
+  --border:    rgba(255,255,255,0.08);
+  --border-h:  rgba(99,179,255,0.4);
+  --accent:    #63b3ff;
+  --accent2:   #3a86e8;
+  --accent-g:  rgba(99,179,255,0.15);
+  --text:      #eef2f7;
+  --text2:     #7a8fa6;
+  --text3:     #3d4f62;
+  --red:       #f56565;
+  --green:     #48bb78;
+  --r:         16px;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+/* ═══ BACKGROUND ═══ */
+.bg-wrap {
+  position: fixed; inset: 0; z-index: 0;
+  background: radial-gradient(ellipse 120% 80% at 60% 50%, #0d1f3c 0%, #0e1117 60%);
+}
+.orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(80px); opacity: 0.35;
+  animation: drift 12s ease-in-out infinite alternate;
+}
+.orb1 { width: 500px; height: 500px; background: #1a3a6e; top: -100px; right: 10%; animation-delay: 0s; }
+.orb2 { width: 350px; height: 350px; background: #0f2a5a; bottom: -80px; right: 25%; animation-delay: -4s; }
+.orb3 { width: 250px; height: 250px; background: #63b3ff22; top: 30%; right: 5%; animation-delay: -8s; }
+
+@keyframes drift {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(30px, -30px) scale(1.08); }
+}
+
+/* Grid lines */
+.grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(99,179,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,179,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ═══ LAYOUT ═══ */
+.page {
+  position: relative; z-index: 1;
+  display: flex; height: 100vh;
+}
+
+/* LEFT — illustration */
+.left {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px; position: relative;
+}
+
+.brand {
+  position: absolute; top: 40px; left: 48px;
+  display: flex; align-items: center; gap: 12px;
+}
+.brand-logo {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, #63b3ff, #1a5fb4);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 24px rgba(99,179,255,0.3);
+  position: relative; overflow: hidden;
+}
+.brand-logo svg { width: 22px; height: 22px; }
+.brand-name { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+.brand-name span { color: var(--accent); }
+
+.hero-title {
+  font-size: 48px; font-weight: 800;
+  line-height: 1.1; letter-spacing: -1.5px;
+  text-align: center; margin-bottom: 18px;
+  max-width: 480px;
+}
+.hero-title .hl {
+  background: linear-gradient(135deg, #63b3ff, #a78bfa);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: 15px; color: var(--text2); text-align: center;
+  line-height: 1.7; max-width: 360px; margin-bottom: 48px;
+}
+
+/* Chat preview cards */
+.preview { position: relative; width: 340px; height: 220px; }
+
+.msg-card {
+  position: absolute;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 14px 16px;
+  display: flex; gap: 10px; align-items: flex-start;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  animation: floatIn 0.8s ease both;
+  min-width: 260px;
+}
+.msg-card:nth-child(1) { top: 0; left: 0; animation-delay: 0.2s; }
+.msg-card:nth-child(2) { top: 75px; left: 60px; animation-delay: 0.5s; }
+.msg-card:nth-child(3) { top: 148px; left: 20px; animation-delay: 0.8s; }
+
+@keyframes floatIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.mc-av {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff;
+}
+.mc-body { flex: 1; }
+.mc-name { font-size: 12px; font-weight: 600; color: var(--accent); margin-bottom: 3px; }
+.mc-text { font-size: 13px; color: var(--text); line-height: 1.4; }
+.mc-time { font-size: 10px; color: var(--text3); margin-top: 4px; }
+.mc-r-pill {
+  display: inline-flex; align-items: center; gap: 3px;
+  background: rgba(99,179,255,0.1); border: 1px solid rgba(99,179,255,0.15);
+  border-radius: 20px; padding: 2px 7px;
+  font-size: 11px; color: var(--text2); margin-right: 4px;
+}
+.mc-r-pill svg { opacity: 0.7; }
+
+.mc-react { font-size: 11px; margin-top: 5px; }
+
+/* Floating pulse dots */
+.pulse-dot {
+  position: absolute; border-radius: 50%;
+  background: var(--accent); opacity: 0.6;
+  animation: pulse 3s ease-in-out infinite;
+}
+.pd1 { width: 8px; height: 8px; top: -10px; right: 40px; animation-delay: 0s; }
+.pd2 { width: 5px; height: 5px; bottom: 10px; right: -5px; animation-delay: -1.5s; }
+
+@keyframes pulse {
+  0%,100% { transform: scale(1); opacity: 0.4; }
+  50%      { transform: scale(1.8); opacity: 0.8; }
+}
+
+/* Typing indicator */
+.typing-pill {
+  position: absolute; bottom: -20px; left: 40px;
+  background: var(--glass); backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 30px; padding: 7px 14px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--text2);
+  animation: floatIn 1s ease 1.2s both;
+}
+.typing-dots { display: flex; gap: 3px; }
+.typing-dots span {
+  width: 5px; height: 5px; background: var(--accent);
+  border-radius: 50%; display: block;
+  animation: bounce 1.2s ease infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: .2s; }
+.typing-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes bounce {
+  0%,80%,100% { transform: translateY(0); }
+  40%          { transform: translateY(-5px); }
+}
+
+/* ═══ RIGHT — form ═══ */
+.right {
+  width: 460px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 48px;
+  background: rgba(255,255,255,0.02);
+  border-left: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+}
+
+.form-box { width: 100%; max-width: 360px; }
+
+.form-head { margin-bottom: 32px; }
+.form-head h2 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+.form-head p { font-size: 14px; color: var(--text2); line-height: 1.5; }
+
+/* Tabs */
+.tabs {
+  display: flex; background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 4px; gap: 4px;
+  margin-bottom: 28px;
+}
+.tab {
+  flex: 1; text-align: center; padding: 9px;
+  border-radius: 9px; cursor: pointer;
+  font-size: 14px; font-weight: 500;
+  color: var(--text2); transition: all .25s;
+  user-select: none;
+}
+.tab.on {
+  background: linear-gradient(135deg, #1a4a8a, #2a5fa0);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(99,179,255,0.2);
+}
+
+/* Fields */
+.field { margin-bottom: 16px; }
+.field label {
+  display: block; font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.9px;
+  color: var(--text2); margin-bottom: 7px;
+}
+.input-wrap { position: relative; }
+.input-wrap svg {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--text3); pointer-events: none; flex-shrink: 0;
+}
+.field input {
+  width: 100%; padding: 12px 44px 12px 42px;
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r); color: var(--text);
+  font-size: 14px; font-family: inherit;
+  outline: none; transition: all .25s;
+}
+.field input:focus {
+  border-color: var(--accent);
+  background: rgba(99,179,255,0.06);
+  box-shadow: 0 0 0 4px rgba(99,179,255,0.1);
+}
+.field input::placeholder { color: var(--text3); }
+.field input.err { border-color: var(--red); }
+.ferr { font-size: 11px; color: var(--red); margin-top: 5px; display: none; }
+.ferr.show { display: block; }
+
+/* Toggle password */
+.eye-btn {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--text3);
+  cursor: pointer; padding: 4px; border-radius: 6px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; transition: .2s;
+}
+.eye-btn:hover { color: var(--text2); }
+
+/* Error box */
+.err-box {
+  background: rgba(245,101,101,0.08);
+  border: 1px solid rgba(245,101,101,0.25);
+  border-radius: 10px; padding: 10px 14px;
+  font-size: 13px; color: #fc8181;
+  margin-bottom: 16px; display: none;
+}
+.err-box.show { display: block; }
+
+/* Submit */
+.submit-btn {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg, #2a5fa0, #1a4a8a);
+  border: none; border-radius: var(--r);
+  color: #fff; font-size: 15px; font-weight: 600;
+  font-family: inherit; cursor: pointer;
+  transition: all .25s; position: relative; overflow: hidden;
+  box-shadow: 0 4px 20px rgba(99,179,255,0.2);
+  margin-top: 4px;
+}
+.submit-btn:hover {
+  background: linear-gradient(135deg, #3a6fbc, #2255a4);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(99,179,255,0.3);
+}
+.submit-btn:active { transform: translateY(0); }
+.submit-btn:disabled {
+  opacity: 0.6; cursor: not-allowed; transform: none;
+}
+.submit-btn .btn-shine {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  transform: translateX(-100%);
+  animation: shine 3s ease infinite;
+}
+@keyframes shine {
+  0%   { transform: translateX(-100%); }
+  30%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Divider */
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 22px 0; color: var(--text3); font-size: 12px;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* Social btns */
+.social-row { display: flex; gap: 10px; }
+.social-btn {
+  flex: 1; padding: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--r); color: var(--text2);
+  font-size: 13px; font-weight: 500;
+  font-family: inherit; cursor: pointer;
+  transition: all .2s; display: flex;
+  align-items: center; justify-content: center; gap: 7px;
+}
+.social-btn:hover { background: rgba(255,255,255,0.08); border-color: var(--border-h); color: var(--text); }
+
+/* Footer note */
+.form-note {
+  text-align: center; font-size: 12px;
+  color: var(--text3); margin-top: 22px;
+}
+.form-note a { color: var(--accent); text-decoration: none; }
+.form-note a:hover { text-decoration: underline; }
+
+/* ═══ SLIDE ANIMATION ═══ */
+.form-panel { animation: slideUp .4s ease both; }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<!-- BG -->
+<div class="bg-wrap">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="grid"></div>
+</div>
+
+<div class="page">
+
+  <!-- LEFT -->
+  <div class="left">
+    <div class="brand">
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="5" cy="5" r="2" fill="white"/>
+          <circle cx="19" cy="5" r="2" fill="white"/>
+          <circle cx="12" cy="19" r="2" fill="white"/>
+          <line x1="5" y1="5" x2="19" y2="5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="19" y1="5" x2="12" y2="19" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="5" y1="5" x2="12" y2="19" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-name">Ne<span>x</span>us</div>
+    </div>
+
+    <h1 class="hero-title">
+      Общение<br>нового <span class="hl">уровня</span>
+    </h1>
+    <p class="hero-sub">
+      Мессенджер нового поколения.<br>
+      Быстро, безопасно, красиво.
+    </p>
+
+    <div class="preview">
+      <div class="pulse-dot pd1"></div>
+      <div class="pulse-dot pd2"></div>
+
+      <div class="msg-card">
+        <div class="mc-av" style="background:linear-gradient(135deg,#667eea,#764ba2)">А</div>
+        <div class="mc-body">
+          <div class="mc-name">Алексей</div>
+          <div class="mc-text">Привет! Как дела?</div>
+          <div class="mc-time">14:23</div>
+        </div>
+      </div>
+
+      <div class="msg-card">
+        <div class="mc-av" style="background:linear-gradient(135deg,#f093fb,#f5576c)">М</div>
+        <div class="mc-body">
+          <div class="mc-name">Мария</div>
+          <div class="mc-text">Отлично, работаем над новым проектом</div>
+          <div class="mc-react">
+        <span class="mc-r-pill">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M7 11l5-10 5 10H7zm5 12c-4.4 0-8-3.6-8-8h16c0 4.4-3.6 8-8 8z"/></svg>
+          3
+        </span>
+        <span class="mc-r-pill">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          1
+        </span>
+      </div>
+        </div>
+      </div>
+
+      <div class="msg-card">
+        <div class="mc-av" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">И</div>
+        <div class="mc-body">
+          <div class="mc-name">Иван</div>
+          <div class="mc-text">Скинь файл когда будет готово</div>
+          <div class="mc-time">14:25</div>
+        </div>
+      </div>
+
+      <div class="typing-pill">
+        <span>Алексей печатает</span>
+        <div class="typing-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="form-box">
+      <div class="form-head">
+        <h2 id="form-title">С возвращением</h2>
+        <p id="form-sub">Войдите в свой аккаунт Nexus</p>
+      </div>
+
+      <div class="tabs">
+        <div class="tab on" onclick="tab('login')">Войти</div>
+        <div class="tab" onclick="tab('reg')">Регистрация</div>
+      </div>
+
+      <div class="err-box" id="err-box"></div>
+
+      <!-- LOGIN -->
+      <div id="login-form" class="form-panel">
+        <div class="field">
+          <label>Email</label>
+          <div class="input-wrap">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <input id="le" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')doLogin()">
+          </div>
+          <div class="ferr" id="le-e"></div>
+        </div>
+        <div class="field">
+          <label>Пароль</label>
+          <div class="input-wrap">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input id="lp" type="password" placeholder="Пароль" onkeydown="if(event.key==='Enter')doLogin()">
+            <button class="eye-btn" onclick="togglePwd('lp',this)" type="button" data-show="false">
+              <!-- eye closed -->
+              <svg class="eye-off" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              <!-- eye open -->
+              <svg class="eye-on" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="display:none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="ferr" id="lp-e"></div>
+        </div>
+        <button class="submit-btn" id="login-btn" onclick="doLogin()">
+          <span class="btn-shine"></span>
+          Войти в Nexus
+        </button>
+        <div class="divider">или</div>
+        <div class="social-row">
+          <button class="social-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Google
+          </button>
+          <button class="social-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.11.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+          </button>
+        </div>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="reg-form" class="form-panel" style="display:none">
+        <div class="field">
+          <label>Имя пользователя</label>
+          <div class="input-wrap">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input id="ru" placeholder="alexey" onkeydown="if(event.key==='Enter')doReg()">
+          </div>
+          <div class="ferr" id="ru-e"></div>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <div class="input-wrap">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <input id="re" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')doReg()">
+          </div>
+          <div class="ferr" id="re-e"></div>
+        </div>
+        <div class="field">
+          <label>Пароль</label>
+          <div class="input-wrap">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input id="rp" type="password" placeholder="Минимум 4 символа" onkeydown="if(event.key==='Enter')doReg()">
+            <button class="eye-btn" onclick="togglePwd('rp',this)" type="button" data-show="false">
+              <svg class="eye-off" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              <svg class="eye-on" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="display:none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="ferr" id="rp-e"></div>
+        </div>
+        <button class="submit-btn" id="reg-btn" onclick="doReg()">
+          <span class="btn-shine"></span>
+          Создать аккаунт
+        </button>
+        <div class="form-note">
+          Регистрируясь, вы принимаете <a href="#">Условия использования</a> и <a href="#">Политику конфиденциальности</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+const EMAIL_RE = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+const $ = id => document.getElementById(id);
+
+function tab(t) {
+  const isLogin = t === 'login';
+  document.querySelectorAll('.tab').forEach((el,i) => el.classList.toggle('on', isLogin ? i===0 : i===1));
+  $('login-form').style.display = isLogin ? '' : 'none';
+  $('reg-form').style.display   = isLogin ? 'none' : '';
+  $('form-title').textContent = isLogin ? 'С возвращением' : 'Создать аккаунт';
+  $('form-sub').textContent   = isLogin ? 'Войдите в свой аккаунт Nexus' : 'Зарегистрируйтесь бесплатно';
+  $('err-box').classList.remove('show');
+  // re-animate
+  const panel = isLogin ? $('login-form') : $('reg-form');
+  panel.style.animation = 'none';
+  panel.offsetHeight;
+  panel.style.animation = '';
+}
+
+function togglePwd(id, btn) {
+  const inp = $(id);
+  const showing = inp.type === 'text';
+  inp.type = showing ? 'password' : 'text';
+  btn.querySelector('.eye-off').style.display = showing ? '' : 'none';
+  btn.querySelector('.eye-on').style.display  = showing ? 'none' : '';
+  btn.style.color = showing ? 'var(--text3)' : 'var(--accent)';
+}
+
+function showErr(msg) {
+  const b = $('err-box');
+  b.textContent = msg;
+  b.classList.add('show');
+}
+
+function clearErrs() {
+  $('err-box').classList.remove('show');
+  document.querySelectorAll('.field input').forEach(el => el.classList.remove('err'));
+  document.querySelectorAll('.ferr').forEach(el => el.classList.remove('show'));
+}
+
+async function doLogin() {
+  clearErrs();
+  const email = $('le').value.trim(), pass = $('lp').value;
+  if (!EMAIL_RE.test(email)) { $('le').classList.add('err'); $('le-e').textContent='Некорректный email'; $('le-e').classList.add('show'); return; }
+  if (!pass) { $('lp').classList.add('err'); $('lp-e').textContent='Введите пароль'; $('lp-e').classList.add('show'); return; }
+  const btn = $('login-btn'); btn.disabled = true; btn.textContent = 'Вход...';
+  try {
+    const r = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, password: pass}) });
+    const d = await r.json();
+    if (r.ok) {
+      localStorage.setItem('mc_tok', d.token);
+      localStorage.setItem('mc_me', JSON.stringify(d.user));
+      window.location.href = '/app';
+    } else {
+      showErr(d.detail || 'Неверный email или пароль');
+    }
+  } catch { showErr('Нет соединения с сервером'); }
+  finally { btn.disabled = false; btn.innerHTML = '<span class="btn-shine"></span>Войти в Nexus'; }
+}
+
+async function doReg() {
+  clearErrs();
+  const u = $('ru').value.trim(), e = $('re').value.trim(), p = $('rp').value;
+  let ok = true;
+  if (u.length < 2) { $('ru').classList.add('err'); $('ru-e').textContent='Мин. 2 символа'; $('ru-e').classList.add('show'); ok=false; }
+  if (!EMAIL_RE.test(e)) { $('re').classList.add('err'); $('re-e').textContent='Некорректный email'; $('re-e').classList.add('show'); ok=false; }
+  if (p.length < 4) { $('rp').classList.add('err'); $('rp-e').textContent='Мин. 4 символа'; $('rp-e').classList.add('show'); ok=false; }
+  if (!ok) return;
+  const btn = $('reg-btn'); btn.disabled = true; btn.textContent = 'Создаём...';
+  try {
+    const r = await fetch('/api/register', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({username:u, email:e, password:p}) });
+    const d = await r.json();
+    if (r.ok) {
+      tab('login');
+      $('le').value = e;
+      // Flash success
+      const b = $('err-box');
+      b.style.background = 'rgba(72,187,120,0.1)';
+      b.style.borderColor = 'rgba(72,187,120,0.3)';
+      b.style.color = '#68d391';
+      b.textContent = '✓ Аккаунт создан! Войдите.';
+      b.classList.add('show');
+      setTimeout(() => { b.style = ''; b.classList.remove('show'); }, 3000);
+    } else {
+      showErr(d.detail || 'Ошибка регистрации');
+    }
+  } catch { showErr('Нет соединения с сервером'); }
+  finally { btn.disabled = false; btn.innerHTML = '<span class="btn-shine"></span>Создать аккаунт'; }
+}
+</script>
+</body>
+</html>
